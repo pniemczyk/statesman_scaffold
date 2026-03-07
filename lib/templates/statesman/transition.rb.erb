@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+<% underscored_model = model.underscore.tr("/", "_") -%>
+<% demodulized_model = model.demodulize.underscore -%>
+
+class <%= class_name %>::Transition < ApplicationRecord
+  self.table_name = "<%= underscored_model %>_transitions"
+
+  belongs_to :<%= demodulized_model %>, class_name: "<%= class_name %>"
+
+  attribute :most_recent, :boolean, default: false
+  attribute :to_state, :string
+  attribute :sort_key, :integer
+  attribute :metadata, :json, default: {}
+
+  validates :to_state, inclusion: { in: <%= class_name %>::StateMachine.states }
+end

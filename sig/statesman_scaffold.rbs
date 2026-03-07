@@ -1,0 +1,36 @@
+module StatesmanScaffold
+  VERSION: String
+
+  class Error < StandardError
+  end
+
+  module Concern
+    def in_state?: (*Symbol | String states) -> bool
+    def not_in_state?: (Symbol | String state) -> bool
+    def state_machine: () -> Statesman::Machine
+    def can_transition_to?: (Symbol | String state) -> bool
+    def transition_to!: (Symbol | String state, ?Hash[Symbol, untyped] metadata) -> bool
+    def transition_to: (Symbol | String state, ?Hash[Symbol, untyped] metadata) -> bool
+    def current_state: () -> String
+  end
+
+  class Generator
+    TEMPLATE_DIR: Pathname
+
+    def self.call: (
+      model: String,
+      output_path: Pathname | String,
+      migration_path: Pathname | String,
+      migration_version: String,
+      ?timestamp: String?
+    ) -> Generator::Result
+  end
+
+  class Installer
+    INITIALIZER_PATH: Pathname
+    INITIALIZER_CONTENT: String
+
+    def self.install!: (Pathname | String rails_root) -> (:created | :skipped)
+    def self.uninstall!: (Pathname | String rails_root) -> (:removed | :skipped)
+  end
+end

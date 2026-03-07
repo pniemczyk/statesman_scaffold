@@ -1,0 +1,31 @@
+# frozen_string_literal: true
+<% underscored_model = model.underscore.tr("/", "_") -%>
+<% demodulized_model = model.demodulize.underscore -%>
+
+class Create<%= class_name.gsub("::", "") %>Transitions < ActiveRecord::Migration[<%= version %>]
+  def change
+    # Instead of t.references with foreign_key: true, you can use:
+    # t.string :<%= demodulized_model %>_id, null: false
+    # And separately add foreign key:
+    # add_foreign_key :<%= underscored_model %>_transitions, :<%= demodulized_model %>s , column: :<%= demodulized_model %>_id, primary_key: :id
+
+    create_table :<%= underscored_model %>_transitions do |t|
+      t.references :<%= demodulized_model %>, null: false, foreign_key: <%= underscored_model == demodulized_model ? "true" : "{ to_table: :#{underscored_model.pluralize} }" %> # Use type when referencing model uses non-default primary key type. Example: type: :string
+      t.string :to_state, null: false
+      t.json :metadata, default: {}
+      t.boolean :most_recent, default: false
+      t.integer :sort_key, null: false
+      t.timestamps null: false
+    end
+
+    add_index(:<%= underscored_model %>_transitions,
+              %i[<%= demodulized_model %>_id sort_key],
+              unique: true,
+              name: "index_<%= underscored_model %>_transition_parent_sort")
+    add_index(:<%= underscored_model %>_transitions,
+              %i[<%= demodulized_model %>_id most_recent],
+              unique: true,
+              where: "most_recent",
+              name: "index_<%= underscored_model %>_transition_parent_most_recent")
+  end
+end
