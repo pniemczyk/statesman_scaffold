@@ -1,0 +1,7 @@
+{
+  "name": "statesman-scaffold",
+  "version": "1.0.0",
+  "description": "Claude Code skill for the statesman_scaffold gem — scaffold Statesman state machines for ActiveRecord models in Rails apps.",
+  "author": "Pawel Niemczyk",
+  "homepage": "https://github.com/pniemczyk/statesman_scaffold"
+}

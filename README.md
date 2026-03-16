@@ -127,6 +127,37 @@ class Project < ApplicationRecord
 end
 ```
 
+## Claude Code Skill
+
+A Claude Code skill is included that teaches Claude how to install and use this gem in any Rails application. When the skill is active, Claude knows how to scaffold state machines, define states and transitions, configure guards and callbacks, handle namespaced models, and write tests.
+
+### Installing the skill
+
+**Option A — copy into your project:**
+
+```bash
+cp -r /path/to/statesman_scaffold/claude-plugin /your/project/.claude-plugins/statesman-scaffold
+```
+
+**Option B — install globally:**
+
+```bash
+mkdir -p ~/.claude/plugins/statesman-scaffold
+cp -r /path/to/statesman_scaffold/claude-plugin/* ~/.claude/plugins/statesman-scaffold/
+```
+
+### Activation phrases
+
+The skill activates automatically when you ask Claude things like:
+
+- "Add statesman_scaffold to this project"
+- "Add a state machine to the Order model"
+- "Scaffold a Statesman state machine for Project"
+- "Add `with_state_machine` to my model"
+- "How do I add Statesman guards?"
+
+See `claude-plugin/README.md` for the full list of trigger phrases and file layout.
+
 ## Development
 
 ```bash
